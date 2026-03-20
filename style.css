@@ -42,6 +42,8 @@ body {
     This helps vertical centering in our main game area.
   */
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #main-game-ui {
@@ -49,11 +51,14 @@ body {
   border-radius: 14px;
   box-shadow: 0 10px 24px rgba(38, 38, 38, 0.12);
   margin: 16px;
+  width: min(1100px, calc(100% - 32px));
+  align-self: center;
   overflow: hidden;
+  flex: 1;
 }
 
 .start-menu {
-  min-height: 100vh;
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +149,8 @@ body {
 
 .stats-actions {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  margin-left: auto;
 }
 
 /* Small text label above each bar */
@@ -235,7 +241,7 @@ body {
   /*
     Push content slightly down from the top bar.
   */
-  margin-top: 80px;
+  margin-top: clamp(20px, 4vw, 56px);
 
   /*
     Space between the scenario card and buttons.
@@ -243,6 +249,7 @@ body {
   gap: 18px;
 
   padding: 0 16px;
+  padding-bottom: 28px;
 }
 
 /*
@@ -297,7 +304,7 @@ body {
     Allow wrapping on small screens so buttons don't overflow.
   */
   flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: stretch;
 }
 
 /*
@@ -313,6 +320,7 @@ body {
   background-color: var(--brand-yellow);
   color: var(--brand-dark);
   min-width: 140px;
+  flex: 1 1 0;
 }
 
 /*
@@ -438,6 +446,12 @@ body {
     min-width: 140px;           /* prevent tiny bars/text */
   }
 
+  .stats-actions {
+    width: 100%;
+    margin-left: 0;
+    justify-content: center;
+  }
+
   .stat-label {
     font-size: 0.85rem;
   }
@@ -484,6 +498,13 @@ body {
   text-align: center;
   padding: 22px 16px 24px;
   border-top: 3px solid #1e293b;
+}
+
+.site-footer-logo {
+  display: block;
+  margin: 0 auto 12px;
+  max-width: 180px;
+  height: auto;
 }
 
 .site-footer-message {
