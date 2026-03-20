@@ -36,6 +36,23 @@ const resetGameButton = document.getElementById("reset-game-button");
 const startMenu = document.getElementById("start-menu");
 const mainGameUI = document.getElementById("main-game-ui");
 
+const clickSfx = new Audio("Sound/click.mp3");
+const levelSfx = new Audio("Sound/level.mp3");
+const winSfx = new Audio("Sound/Win.mp3");
+const gameOverSfx = new Audio("Sound/Game over.mp3");
+
+clickSfx.preload = "auto";
+levelSfx.preload = "auto";
+winSfx.preload = "auto";
+gameOverSfx.preload = "auto";
+
+function playSound(sound) {
+  sound.currentTime = 0;
+  sound.play().catch((error) => {
+    console.warn("Sound playback was blocked:", error);
+  });
+}
+
 // -------------------------------------------------------------
 // 4) Rendering helpers
 // -------------------------------------------------------------
@@ -107,6 +124,8 @@ function loadScenario() {
 }
 
 function startGame(difficulty) {
+  playSound(levelSfx);
+
   switch (difficulty) {
     case "Easy":
       health = 100;
@@ -299,11 +318,14 @@ function showEndGameModal(title, description) {
 
 function endGame(result, title, description) {
   if (result === "win" && typeof confetti === "function") {
+    playSound(winSfx);
     confetti({
       particleCount: 160,
       spread: 80,
       origin: { y: 0.6 },
     });
+  } else if (result === "lose") {
+    playSound(gameOverSfx);
   }
 
   showEndGameModal(title, description);
@@ -362,10 +384,12 @@ function checkGameEnd() {
 // 6) Event listeners
 // -------------------------------------------------------------
 optionAButton.addEventListener("click", function () {
+  playSound(clickSfx);
   handleChoice("A");
 });
 
 optionBButton.addEventListener("click", function () {
+  playSound(clickSfx);
   handleChoice("B");
 });
 
