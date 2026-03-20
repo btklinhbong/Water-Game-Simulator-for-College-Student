@@ -10,6 +10,13 @@
   box-sizing: border-box;
 }
 
+:root {
+  --brand-yellow: #FFC800;
+  --brand-cream: #F6F4EA;
+  --brand-white: #FFFFFF;
+  --brand-dark: #262626;
+}
+
 /*
   The body is the main page container.
   We remove default browser margin so we can control spacing ourselves.
@@ -18,22 +25,82 @@ body {
   margin: 0;
 
   /*
-    A simple system font stack for good readability.
+    Montserrat is loaded from Google Fonts.
+    The rest are fallbacks in case it cannot be loaded.
     The browser will use the first available font.
   */
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
 
   /*
     Soft background + dark text for contrast.
   */
-  background-color: #f4f7fb;
-  color: #1f2937;
+  background-color: var(--brand-cream);
+  color: var(--brand-dark);
 
   /*
     100vh means "100% of viewport height".
     This helps vertical centering in our main game area.
   */
   min-height: 100vh;
+}
+
+#main-game-ui {
+  background-color: var(--brand-white);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(38, 38, 38, 0.12);
+  margin: 16px;
+  overflow: hidden;
+}
+
+.start-menu {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.start-menu-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.start-menu-title {
+  margin: 0;
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.start-menu-subtitle {
+  margin: 10px 0 20px;
+  color: #475569;
+}
+
+.difficulty-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.difficulty-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: var(--brand-yellow);
+  color: var(--brand-dark);
+}
+
+.difficulty-button:hover {
+  background-color: #e3b300;
+  color: var(--brand-dark);
 }
 
 /*
@@ -128,7 +195,7 @@ body {
 
 /* Each stat gets its own colour for quick at-a-glance reading */
 .health-bar    { background-color: #ef4444; }   /* red   */
-.hydration-bar { background-color: #38bdf8; }   /* sky   */
+.hydration-bar { background-color: var(--brand-yellow); }   /* brand */
 .sanity-bar    { background-color: #a78bfa; }   /* violet */
 .gpa-bar       { background-color: #facc15; }   /* amber */
 
@@ -243,8 +310,8 @@ body {
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
-  background-color: #2563eb;
-  color: #ffffff;
+  background-color: var(--brand-yellow);
+  color: var(--brand-dark);
   min-width: 140px;
 }
 
@@ -252,7 +319,8 @@ body {
   :hover applies when mouse is over the button.
 */
 .option-button:hover {
-  background-color: #1d4ed8;
+  background-color: #e3b300;
+  color: var(--brand-dark);
 }
 
 .reset-button {
@@ -407,5 +475,53 @@ body {
 @media (max-width: 480px) {
   .stat-item {
     flex: 1 1 100%;  /* single column stack */
+  }
+}
+
+.site-footer {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  text-align: center;
+  padding: 22px 16px 24px;
+  border-top: 3px solid #1e293b;
+}
+
+.site-footer-message {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.site-footer-links {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.site-footer-links a {
+  color: #fcd34d;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.site-footer-links a:hover,
+.site-footer-links a:focus-visible {
+  color: #fde68a;
+  text-decoration: underline;
+}
+
+.site-footer-divider {
+  margin: 0 10px;
+  color: #94a3b8;
+}
+
+@media (max-width: 480px) {
+  .site-footer-divider {
+    display: none;
+  }
+
+  .site-footer-links a {
+    display: inline-block;
+    margin: 3px 6px;
   }
 }

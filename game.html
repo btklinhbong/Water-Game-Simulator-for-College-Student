@@ -18,6 +18,10 @@
   -->
   <title>Water Game</title>
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <!--
     This links the external CSS file.
     CSS is where we define colors, spacing, sizes, alignment, etc.
@@ -25,6 +29,20 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <div id="start-menu" class="start-menu">
+    <div class="start-menu-card">
+      <h1 class="start-menu-title">Water Game</h1>
+      <p class="start-menu-subtitle">Choose a difficulty to begin.</p>
+      <div class="difficulty-buttons">
+        <button class="difficulty-button" type="button" onclick="startGame('Easy')">Easy</button>
+        <button class="difficulty-button" type="button" onclick="startGame('Normal')">Normal</button>
+        <button class="difficulty-button" type="button" onclick="startGame('Hard')">Hard</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="main-game-ui" style="display: none;">
 
   <!--
     ===== Quick beginner note: How HTML + CSS work together =====
@@ -135,6 +153,17 @@
       <button id="play-again-button" class="option-button">Play Again</button>
     </div>
   </div>
+
+  </div>
+
+  <footer class="site-footer" aria-label="Take action footer">
+    <p class="site-footer-message">Help end the water crisis.</p>
+    <p class="site-footer-links">
+      <a href="https://www.charitywater.org/" target="_blank" rel="noopener noreferrer">Visit charity: water</a>
+      <span class="site-footer-divider" aria-hidden="true">|</span>
+      <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate now</a>
+    </p>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <script src="script.js"></script>

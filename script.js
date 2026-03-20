@@ -5,6 +5,7 @@ let health = 75;
 let hydration = 75;
 let sanity = 75;
 let gpa = 75;
+let obstacleChance = 0.20;
 let currentTurn = 0;
 let endGameTimerId = null;
 
@@ -32,6 +33,8 @@ const endGameTitle = document.getElementById("end-game-title");
 const endGameDescription = document.getElementById("end-game-description");
 const playAgainButton = document.getElementById("play-again-button");
 const resetGameButton = document.getElementById("reset-game-button");
+const startMenu = document.getElementById("start-menu");
+const mainGameUI = document.getElementById("main-game-ui");
 
 // -------------------------------------------------------------
 // 4) Rendering helpers
@@ -102,6 +105,60 @@ function renderCurrentScenario() {
 function loadScenario() {
   renderCurrentScenario();
 }
+
+function startGame(difficulty) {
+  switch (difficulty) {
+    case "Easy":
+      health = 100;
+      hydration = 100;
+      sanity = 100;
+      gpa = 100;
+      obstacleChance = 0.10;
+      break;
+    case "Normal":
+      health = 75;
+      hydration = 75;
+      sanity = 75;
+      gpa = 75;
+      obstacleChance = 0.20;
+      break;
+    case "Hard":
+      health = 50;
+      hydration = 50;
+      sanity = 50;
+      gpa = 50;
+      obstacleChance = 0.40;
+      break;
+    default:
+      health = 75;
+      hydration = 75;
+      sanity = 75;
+      gpa = 75;
+      obstacleChance = 0.20;
+      break;
+  }
+
+  currentTurn = 0;
+
+  if (endGameTimerId !== null) {
+    clearTimeout(endGameTimerId);
+    endGameTimerId = null;
+  }
+
+  fadeOverlay.classList.remove("active");
+  endGameModal.style.display = "none";
+  optionAButton.disabled = false;
+  optionBButton.disabled = false;
+
+  if (startMenu) startMenu.style.display = "none";
+  if (mainGameUI) mainGameUI.style.display = "block";
+
+  updateUI();
+  saveGameState();
+  loadScenario();
+}
+
+window.startGame = startGame;
 
 function saveGameState() {
   const gameState = {
@@ -343,6 +400,5 @@ async function loadScenariosFromJSON() {
 
 // Load scenarios and initialize game ONLY after JSON loads
 loadScenariosFromJSON().then(() => {
-  initializeGame();
-  checkGameEnd();
+  updateUI();
 });
