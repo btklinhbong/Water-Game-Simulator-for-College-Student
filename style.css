@@ -1,0 +1,411 @@
+/*
+  =============================================================
+  BASIC RESET + PAGE FOUNDATION
+  =============================================================
+
+  The selector "*" means "all elements".
+  We set box-sizing so width/height calculations are easier and more predictable.
+*/
+* {
+  box-sizing: border-box;
+}
+
+/*
+  The body is the main page container.
+  We remove default browser margin so we can control spacing ourselves.
+*/
+body {
+  margin: 0;
+
+  /*
+    A simple system font stack for good readability.
+    The browser will use the first available font.
+  */
+  font-family: Arial, Helvetica, sans-serif;
+
+  /*
+    Soft background + dark text for contrast.
+  */
+  background-color: #f4f7fb;
+  color: #1f2937;
+
+  /*
+    100vh means "100% of viewport height".
+    This helps vertical centering in our main game area.
+  */
+  min-height: 100vh;
+}
+
+/*
+  =============================================================
+  TOP STATS BAR
+  =============================================================
+
+  .stats-bar applies to <div class="stats-bar"> in HTML.
+  This shows how classes connect HTML to CSS:
+  - HTML class="stats-bar"
+  - CSS selector .stats-bar { ... }
+*/
+.stats-bar {
+  display: flex;
+
+  /*
+    "gap" adds equal spacing between each stat-item without needing margins.
+  */
+  gap: 16px;
+
+  align-items: flex-start;
+
+  padding: 16px 24px;
+  background-color: #0f172a;
+  color: #ffffff;
+  border-bottom: 3px solid #1e293b;
+  flex-wrap: wrap;
+}
+
+/*
+  Each stat block: label text stacked above the bar track.
+  flex: 1 makes all four blocks share the bar width equally.
+*/
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 80px;
+}
+
+.stats-actions {
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Small text label above each bar */
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+/*
+  The outer container of the bar — always full width, dark background.
+  overflow: hidden clips the inner fill so it never bleeds past the corners.
+*/
+.stat-bar-track {
+  width: 100%;
+  height: 10px;
+  background-color: #1e293b;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+/*
+  The inner filled portion.
+
+  CSS TRANSITIONS EXPLAINED
+  --------------------------
+  When JavaScript changes style.width on this element the browser does NOT
+  jump straight to the new value.  Instead, the transition rule says:
+    "animate the 'width' property over 0.45 seconds using an ease-out curve".
+
+  Sequence:
+  1. JS sets element.style.width = "60%";
+  2. The browser detects that 'width' changed.
+  3. Because a matching transition is declared, it interpolates every
+     rendered frame between the old and new width for 0.45 s.
+  4. Result: a smooth slide, not a snap.
+
+  ease-out starts fast and decelerates — this feels natural for stat bars.
+*/
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  width: 75%;          /* overwritten by JS on every stat change */
+  transition: width 0.5s ease-out;
+}
+
+/* Each stat gets its own colour for quick at-a-glance reading */
+.health-bar    { background-color: #ef4444; }   /* red   */
+.hydration-bar { background-color: #38bdf8; }   /* sky   */
+.sanity-bar    { background-color: #a78bfa; }   /* violet */
+.gpa-bar       { background-color: #facc15; }   /* amber */
+
+@keyframes shake {
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  50% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.danger-mode {
+  animation: shake 0.3s ease-in-out infinite;
+}
+
+/*
+  =============================================================
+  MAIN GAME AREA
+  =============================================================
+*/
+.game-area {
+  /*
+    Flexbox makes it easy to center and stack elements.
+  */
+  display: flex;
+
+  /*
+    "column" stacks children vertically (card, then button row).
+  */
+  flex-direction: column;
+
+  /*
+    Horizontal centering.
+  */
+  align-items: center;
+
+  /*
+    Push content slightly down from the top bar.
+  */
+  margin-top: 80px;
+
+  /*
+    Space between the scenario card and buttons.
+  */
+  gap: 18px;
+
+  padding: 0 16px;
+}
+
+/*
+  =============================================================
+  SCENARIO CARD
+  =============================================================
+*/
+.scenario-card {
+  width: 100%;
+
+  /*
+    max-width prevents the card from getting too wide on large screens.
+  */
+  max-width: 640px;
+
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+/*
+  Styles the <h1 class="scenario-title">.
+*/
+.scenario-title {
+  margin: 0 0 12px;
+  font-size: 2rem;
+}
+
+/*
+  Styles the paragraph text inside the card.
+*/
+.scenario-text {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/*
+  =============================================================
+  OPTIONS (BUTTONS)
+  =============================================================
+*/
+.options-row {
+  display: flex;
+  gap: 12px;
+  width: 100%;
+  max-width: 640px;
+
+  /*
+    Allow wrapping on small screens so buttons don't overflow.
+  */
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+/*
+  This class styles BOTH buttons because both have class="option-button".
+*/
+.option-button {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #2563eb;
+  color: #ffffff;
+  min-width: 140px;
+}
+
+/*
+  :hover applies when mouse is over the button.
+*/
+.option-button:hover {
+  background-color: #1d4ed8;
+}
+
+.reset-button {
+  border: 1px solid #b91c1c;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #dc2626;
+  color: #ffffff;
+  min-width: 110px;
+}
+
+.reset-button:hover {
+  background-color: #b91c1c;
+}
+
+.reset-button:active {
+  background-color: #991b1b;
+}
+
+.reset-button:focus-visible {
+  outline: 3px solid rgba(248, 113, 113, 0.45);
+  outline-offset: 2px;
+}
+
+/*
+  =============================================================
+  FADE-OUT EFFECT
+  =============================================================
+  
+  When the game ends, a full-screen overlay gradually fades in.
+  This creates a dramatic darkening effect while JavaScript shows the end screen.
+*/
+.fade-overlay {
+  position: fixed;
+  inset: 0;  /* covers entire viewport */
+  background-color: rgba(15, 23, 42, 0.9);  /* dark semi-transparent color */
+  opacity: 0;  /* starts completely transparent */
+  pointer-events: none;  /* blocks mouse clicks while transparent */
+  z-index: 999;  /* layer below the modal content */
+  
+  /*
+    CSS TRANSITION EXPLAINED:
+    -----
+    transition: opacity 2s ease-out;
+    
+    This tells the browser: "When opacity changes, animate it smoothly
+    over 2 seconds using an ease-out timing function."
+    
+    - "opacity" = only animate this property
+    - "2s" = take exactly 2 seconds
+    - "ease-out" = start fast, slow down at the end (dramatic effect)
+    
+    When JavaScript changes opacity from 0 to 1, the browser doesn't
+    instantly jump to 1. Instead, it interpolates every single frame
+    between 0 and 1 over the 2-second duration.
+  */
+  transition: opacity 2s ease-out;
+}
+
+/*
+  When JavaScript adds the "active" class, opacity becomes 1.
+  The CSS transition above handles the smooth animation.
+*/
+.fade-overlay.active {
+  opacity: 1;
+}
+
+.end-game-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.82);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.end-game-content {
+  width: 100%;
+  max-width: 640px;
+  background-color: #ffffff;
+  border: 2px solid #d1d5db;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+}
+
+.end-game-content h2 {
+  margin: 0 0 12px;
+  font-size: 2rem;
+}
+
+.end-game-content p {
+  margin: 0 0 20px;
+  line-height: 1.6;
+}
+
+/* Base (desktop/tablet large) stays as your current styles */
+
+/* Mobile + small tablets */
+@media (max-width: 768px) {
+  .stats-bar {
+    flex-wrap: wrap;          /* allow next line */
+    justify-content: center;  /* cleaner centering */
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .stat-item {
+    flex: 0 1 calc(50% - 10px); /* 2 columns */
+    min-width: 140px;           /* prevent tiny bars/text */
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+  }
+
+  .game-area {
+    margin-top: 32px;
+  }
+
+  .options-row {
+    flex-wrap: wrap;
+  }
+
+  .option-button {
+    flex: 1 1 calc(50% - 12px);
+  }
+}
+
+/* Very small phones: stack stats and buttons in one column */
+@media (max-width: 480px) {
+  .stat-item {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .option-button {
+    flex: 1 1 100%;
+  }
+
+  .scenario-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Optional: very small phones */
+@media (max-width: 480px) {
+  .stat-item {
+    flex: 1 1 100%;  /* single column stack */
+  }
+}
